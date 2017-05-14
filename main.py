@@ -13,38 +13,40 @@
 """
 
 from mcpi import minecraft
-from utility import *
 from World import *
-
-mc = minecraft.Minecraft.create()
-hansel = mc.player
-triggers = []
 
 
 def main():
-    global triggers
+
+    #################################
+    #            variables          #
+    #################################
+
+    mc = minecraft.Minecraft.create()
+    hansel = mc.player
+    triggers = []
 
     #################################
     #          create world         #
     #################################
 
     # surface
-    create_ground()
-    create_craggy_mountains()
-    create_forest()
-    create_corn_candy_mountains()
-    create_river()
-    create_ice_cream_hills()
-    create_lollipop_forest()
-    create_cane_candy_forest()
-    create_oreos()
-    create_cupcake_village()
-    create_coke_tower()
+    create_ground(mc)
+    create_craggy_mountains(mc)
+    create_forest(mc)
+    create_corn_candy_mountains(mc)
+    create_river(mc)
+    create_ice_cream_hills(mc)
+    create_lollipop_forest(mc)
+    create_cane_candy_forest(mc)
+    create_oreos(mc)
+    create_cupcake_village(mc)
+    create_coke_tower(mc)
 
     # underground
-    create_mazes()
-    create_elevators()
-    create_mobs()
+    create_mazes(mc)
+    create_elevators(mc)
+    create_mobs(mc)
 
     ###################################
     #          main game loop         #
@@ -54,6 +56,7 @@ def main():
     # TODO set init pos
     hansel.setTilePos(100, 100, 100)
 
+    # loop
     while True:
         for i in xrange(len(triggers)):
             if triggers[i].condition():
