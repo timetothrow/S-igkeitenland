@@ -2,13 +2,13 @@
 
 from math import sqrt
 from utility import *
-import main
 
 
 class Trigger(object):
     """Base class for other blocks can trigger an event"""
 
     def __init__(self, x, y, z, d, block_type, material=0):
+        # set values
         self.x = x
         self.y = y
         self.z = z
@@ -16,16 +16,28 @@ class Trigger(object):
         self.block_type = block_type
         self.material = material
 
-    def distance(self, hansel):
+        # add self to triggers list
+        triggers.append(self)
+
+    def distance(self):
+        """distance between self and hansel"""
         return sqrt((self.x - hansel.x) ** 2 + (self.y - hansel.y) ** 2 + (self.z - hansel.z) ** 2)
 
     def condition(self):
-        if self.distance(main.hansel) < self.d and main.mc.getBlock() == self.block_type:
+        """condition for action to happen"""
+        if mc.getBlock() != self.block_type:
+            self.__del__()
+
+        if self.distance() < self.d:
             return True
         return False
 
     def action(self):
+        # TODO remove self from triggers when finish; some remain
         pass
+
+    def __del__(self):
+        triggers.remove(self)
 
 
 #################################################

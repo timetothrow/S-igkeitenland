@@ -8,7 +8,7 @@ from utility import *
 ##################################################
 
 
-def create_ground(mc):
+def create_ground():
     """clear sky and create ground"""
 
     # ground
@@ -19,78 +19,78 @@ def create_ground(mc):
     mc.setBlocks(127, 63, 127, -128, ground_height, -128, 0)
 
 
-def create_mountain(mc):
+def create_mountain():
     """create a mountain"""
     pass
 
 
-def create_craggy_mountains(mc):
+def create_craggy_mountains():
     """create tall mountains surround map"""
     pass
 
 
-def create_tree(mc):
+def create_tree():
     """create one tree"""
     pass
 
 
-def create_forest(mc):
+def create_forest():
     """ create a forest at the south of the map"""
     pass
 
 
-def create_corn_mountain(mc):
+def create_corn_mountain():
     """create a corn candy mountain"""
     pass
 
 
-def create_corn_candy_mountains(mc):
+def create_corn_candy_mountains():
     """ create a forest at the south of the map"""
     pass
 
 
-def create_river(mc):
+def create_river():
     """create a chocolate river"""
     pass
 
 
-def create_hill(mc):
+def create_hill():
     """create an ice-cream hill"""
 
 
-def create_ice_cream_hills(mc):
+def create_ice_cream_hills():
     """create ice cream hills at the west of the map"""
 
 
-def create_lollipop(mc):
+def create_lollipop():
     """create a lollipop"""
 
 
-def create_lollipop_forest(mc):
+def create_lollipop_forest():
     """create a lollipop forest at the south of the map"""
 
 
-def create_cane_candy(mc):
+def create_cane_candy():
     """create a cane candy"""
 
 
-def create_cane_candy_forest(mc):
+def create_cane_candy_forest():
     """create cane candy forest at the north of the map"""
 
 
-def create_oreo(mc):
+def create_oreo():
     """create a oreo"""
 
 
-def create_oreos(mc):
+def create_oreos():
     """create oreos at the east of the map"""
 
 
-def create_cupcake_village(mc):
+def create_cupcake_village():
     """create cupcake village at the center of the map"""
 
 
-def create_coke_tower(mc):
+def create_coke_tower():
     """create_coke_tower at the north of the village"""
 
 
@@ -99,7 +99,7 @@ def create_coke_tower(mc):
 ####################################
 
 
-def create_maze_floor(mc, floor):
+def create_maze_floor(floor):
     """
             create a floor of the maze
         file structure:
@@ -108,14 +108,13 @@ def create_maze_floor(mc, floor):
         # #  #  #####   ...
         # ##  #  ########...
         # = block
-        :r
     """
 
     # load data from file to array
     f = open("./data/mazes/maze" + str(floor) + ".txt", "r")
-    maze_map = f.read(mc).split("\n")
-    l, w, h = maze_map.pop(0).split(mc)
-    x, y, z = maze_map.pop(0).split(mc)
+    maze_map = f.read().split("\n")
+    l, w, h = maze_map.pop(0).split()
+    x, y, z = maze_map.pop(0).split()
 
     # create maze
     for i in xrange(l):
@@ -126,19 +125,19 @@ def create_maze_floor(mc, floor):
                 mc.setBlock(x + i, y + k, z + j, block_type)
 
 
-def create_mazes(mc):
+def create_mazes():
     """create floors of the maze"""
     for i in xrange(number_of_floor):
         create_maze_floor(mc, i)
 
 
-def create_elevator(mc):
+def create_elevator():
     """create a elevator"""
 
 
-def create_elevators(mc):
+def create_elevators():
     """create elevators connecting floors of maze"""
 
 
-def create_mobs(mc):
+def create_mobs():
     """create mobs all over the maze"""
