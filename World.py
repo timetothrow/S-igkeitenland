@@ -105,6 +105,8 @@ def create_maze_floor(floor):
         file structure:
         length, width, height of maze
         x, y, z position of first block of maze
+        x_in, z_in relative position of player when first in floor
+        x_out, z_out 
         # #  #  #####   ...
         # ##  #  ########...
         # = block
