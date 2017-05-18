@@ -2,19 +2,19 @@
 
 from math import sqrt
 from utility import *
-
+from mcpi.block import *
 
 class Trigger(object):
     """Base class for other blocks can trigger an event"""
 
-    def __init__(self, x, y, z, d, block_type, material=0):
+    def __init__(self, x, y, z, d, block_type, block_data=0):
         # set values
         self.x = x
         self.y = y
         self.z = z
         self.d = d
         self.block_type = block_type
-        self.material = material
+        self.block_data = block_data
 
         # add self to triggers list
         triggers.append(self)
@@ -59,6 +59,18 @@ class FallToMaze(Trigger):
 ################################################
 #              Traps in the maze               #
 ################################################
+
+class FallIntoWater(Trigger):
+    def __init__(self, x, y, z, d, block_type, block_data=0):
+        super(FallIntoWater, self).__init__(x, y, z, d, block_type, block_data)
+        # create water underneath
+        self.depth = 3
+        for i in xrange(self.depth):
+            mc.setBlock(x, y - 1 + i, z, WATER.id)
+
+    def action(self):
+        pos = hansel.getTilePos()
+        mc.setBlock(pos.x, pos.y, pos.z, WATER.id)
 
 
 ################################################
