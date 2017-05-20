@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 # coding=utf-8
+# TODO style guide
 
 """
                 Project Minecraft - Süßigkeitenland
@@ -13,7 +14,7 @@
 """
 
 from World import *
-from utility import *
+import utility
 
 
 def main():
@@ -37,7 +38,7 @@ def main():
 
     # underground
     create_mazes()
-    create_elevators()
+    create_ladder_rooms()
     create_mobs()
 
     #######################################
@@ -50,9 +51,16 @@ def main():
 
     # loop
     while len(triggers) > 0:
+        # update info
+        utility.pos = hansel.getPos()
+        utility.tilePos = hansel.getTilePos()
+
+        # check triggers
         for trig in triggers:
             if trig.condition():
                 trig.action()
+                if trig.one_time:
+                    del trig
 
 
 if __name__ == "__main__":

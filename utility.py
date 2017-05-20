@@ -9,11 +9,13 @@ from mcpi import minecraft
 
 mc = minecraft.Minecraft.create()
 hansel = mc.player
+pos = hansel.getPos()
+tilePos = hansel.getTilePos()
 triggers = []
 
-#####################################
-#             Constants             #
-#####################################
+######################################
+#              Constants             #
+######################################
 
 ground_height = 0
 number_of_floor = 3
