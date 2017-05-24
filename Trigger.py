@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from utility import *
+import utility
 from mcpi.block import *
 from mcpi.vec3 import *
 
@@ -9,50 +9,55 @@ from mcpi.vec3 import *
 #         Base classes for all triggers         #
 #################################################
 
-class Trigger(object):
-    """Base class for all triggers"""
+class TriggerStepOn(object):
+    """Base class for blocks that trigger an event when it is step on"""
 
     def __init__(self, x, y, z, block_type, block_data=0, one_time=True):
         # set values
-        self.pos = Vec3(x, y, z)
+        self.pos = Vec3(x, y + 1, z)
         self.block = Block(block_type, block_data)
         self.one_time = one_time
 
         # add self to triggers list
-        triggers.append(self)
-
-
-class TriggerStepOn(Trigger):
-    """Base class for blocks that trigger an event when it is step on"""
-
-    def __init__(self, x, y, z, block_type, block_data=0, one_time=True):
-        Trigger.__init__(self, x, y + 1, z, block_type, block_data, one_time)
+        utility.triggers.append(self)
 
         # set block under trigger block to correct type
-        mc.setBlock(x, y, z, self.block)
+        utility.mc.setBlock(x, y, z, self.block)
 
     def condition(self):
         """check if hansel steps on block"""
-        if self.pos == tilePos:
+        if self.pos == utility.tilePos:
             return True
         return False
 
+    def action(self):
+        pass
 
-class TriggerComeClose(Trigger):
+
+class TriggerComeClose(object):
     """Base class for blocks that trigger an event when hansel is close enough"""
 
     def __init__(self, x, y, z, d, block_type, block_data=0, one_time=True):
-        Trigger.__init__(self, x, y + 1, z, block_type, block_data, one_time)
+        # set values
+        self.pos = Vec3(x, y, z)
+        self.block = Block(block_type, block_data)
+        self.one_time = one_time
         self.d = d
 
+        # add self to triggers list
+        utility.triggers.append(self)
+
     def distance(self):
-        return (self.pos - pos).length()
+        return (self.pos - utility.pos).length()
 
     def condition(self):
         """check if hansel is close enough"""
         if self.distance() < self.d:
             return True
         return False
+
+    def action(self):
+        pass
 
 
 #################################################
@@ -67,7 +72,7 @@ class Message(TriggerComeClose):
         self.message = message
 
     def action(self):
-        mc.postToChat(self.message)
+        utility.mc.postToChat(self.message)
 
 
 ################################################
@@ -81,12 +86,11 @@ class FallTrap(TriggerStepOn):
         self.depth = self.pos.y - depth
 
         # create a hole
-        mc.setBlocks(self.pos.x, self.pos.y - 1, self.pos.z,
-                     self.pos.x, self.depth, self.pos.z, AIR)
+        utility.mc.setBlocks(self.pos.x, self.pos.y - 2, self.pos.z,
+                             self.pos.x, self.depth, self.pos.z, AIR)
 
-    @staticmethod
-    def action():
-        mc.setBlock(tilePos.x, tilePos.y - 1, tilePos.z, AIR)
+    def action(self):
+        utility.mc.setBlock(utility.tilePos.x, utility.tilePos.y - 1, utility.tilePos.z, AIR)
 
 
 class FallIntoMazeTrap(FallTrap):
@@ -94,21 +98,21 @@ class FallIntoMazeTrap(FallTrap):
     will fall into the lowest level of the maze"""
 
     def __init__(self, x, y, z):
-        FallTrap.__init__(self, x, y, z, 10 * number_of_floor, STONE.id, 0, True)
+        FallTrap.__init__(self, x, y, z, 10 * utility.number_of_floor, STONE.id, 0, True)
 
         # create a chamber at the end of the hole
-        mc.setBlocks(pos.x - 5, self.depth, pos.z - 5,
-                     pos.x + 5, self.depth - 5, pos.z + 5, AIR)
+        utility.mc.setBlocks(utility.pos.x - 5, self.depth, utility.pos.z - 5,
+                             utility.pos.x + 5, self.depth - 5, utility.pos.z + 5, AIR)
 
         # create water in the chamber to catch hansel
-        mc.setBlocks(pos.x - 5, self.depth - 5, pos.z - 5,
-                     pos.x + 5, self.depth - 10, pos.z + 5, WATER)
+        utility.mc.setBlocks(utility.pos.x - 5, self.depth - 5, utility.pos.z - 5,
+                             utility.pos.x + 5, self.depth - 10, utility.pos.z + 5, WATER)
 
 
 class FallIntoLavaTrap(FallTrap):
     def __init__(self, x, y, z):
-        FallTrap.__init__(self, x, y, z, 10 * number_of_floor, STONE.id, 0, True)
-        mc.setBlock(x, self.depth, z, LAVA)
+        FallTrap.__init__(self, x, y, z, 3, STONE.id, 0, True)
+        utility.mc.setBlock(x, self.depth, z, LAVA)
 
 ################################################
 #                 Final trap                   #

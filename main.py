@@ -47,20 +47,19 @@ def main():
 
     # move player to the initial position
     # TODO set init pos
-    hansel.setTilePos(100, 100, 100)
+    utility.hansel.setTilePos(100, 100, 100)
 
     # loop
-    while len(triggers) > 0:
+    while len(utility.triggers) > 0:
         # update info
-        utility.pos = hansel.getPos()
-        utility.tilePos = hansel.getTilePos()
+        utility.update_info()
 
         # check triggers
-        for trig in triggers:
+        for trig in utility.triggers:
             if trig.condition():
                 trig.action()
                 if trig.one_time:
-                    del trig
+                    utility.triggers.remove(trig)
 
 
 if __name__ == "__main__":
